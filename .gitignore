@@ -1,0 +1,6 @@
+.go-version
+.terraform
+token_cache.json
+*.tfstate*
+*.log
+/terraform-provider-*

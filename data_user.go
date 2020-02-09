@@ -18,12 +18,13 @@ func dataUserResource() *schema.Resource {
 		Delete: dataUserDelete,
 		Schema: map[string]*schema.Schema{
 			"user_principal_name": &schema.Schema{Type: schema.TypeString, Required: true},
-			"display_name":        &schema.Schema{Type: schema.TypeString, Optional: true},
+			"display_name":        &schema.Schema{Type: schema.TypeString, Required: true},
 			"given_name":          &schema.Schema{Type: schema.TypeString, Optional: true},
 			"surname":             &schema.Schema{Type: schema.TypeString, Optional: true},
-			"mail_nickname":       &schema.Schema{Type: schema.TypeString, Optional: true},
+			"mail_nickname":       &schema.Schema{Type: schema.TypeString, Required: true},
 			"mail":                &schema.Schema{Type: schema.TypeString, Computed: true},
 			"other_mails":         &schema.Schema{Type: schema.TypeList, Optional: true, Elem: &schema.Schema{Type: schema.TypeString}},
+			"account_enabled":     &schema.Schema{Type: schema.TypeBool, Required: true},
 		},
 	}
 }
@@ -66,25 +67,37 @@ func (d *dataUser) dataGraphSet(user *msgraph.User) {
 	d.data.Set("mail_nickname", user.MailNickname)
 	d.data.Set("mail", user.Mail)
 	d.data.Set("other_mails", user.OtherMails)
+	d.data.Set("account_enabled", user.AccountEnabled)
 }
 
 func (d *dataUser) dataGraphGet() *msgraph.User {
-	user := &msgraph.User{
-		UserPrincipalName: P.String(d.data.Get("user_principal_name").(string)),
-		DisplayName:       P.String(d.data.Get("display_name").(string)),
-		GivenName:         P.String(d.data.Get("given_name").(string)),
-		Surname:           P.String(d.data.Get("surname").(string)),
-		MailNickname:      P.String(d.data.Get("mail_nickname").(string)),
+	user := &msgraph.User{}
+	if val, ok := d.data.GetOkExists("user_principal_name"); ok {
+		user.UserPrincipalName = P.CastString(val)
 	}
-	for _, i := range d.data.Get("other_mails").([]interface{}) {
-		user.OtherMails = append(user.OtherMails, i.(string))
+	if val, ok := d.data.GetOkExists("display_name"); ok {
+		user.DisplayName = P.CastString(val)
+	}
+	if val, ok := d.data.GetOkExists("given_name"); ok {
+		user.GivenName = P.CastString(val)
+	}
+	if val, ok := d.data.GetOkExists("surname"); ok {
+		user.Surname = P.CastString(val)
+	}
+	if val, ok := d.data.GetOkExists("mail_nickname"); ok {
+		user.MailNickname = P.CastString(val)
+	}
+	for _, val := range d.data.Get("other_mails").([]interface{}) {
+		user.OtherMails = append(user.OtherMails, val.(string))
+	}
+	if val, ok := d.data.GetOkExists("account_enabled"); ok {
+		user.AccountEnabled = P.CastBool(val)
 	}
 	return user
 }
 
 func (d *dataUser) dataCreate() error {
 	newUser := d.dataGraphGet()
-	newUser.AccountEnabled = P.Bool(true)
 	newUser.PasswordProfile = &msgraph.PasswordProfile{
 		ForceChangePasswordNextSignIn: P.Bool(false),
 		Password:                      P.String(uuid.New().String()), // XXX: random password
@@ -139,7 +152,7 @@ func (d *dataUser) graphCreate(user *msgraph.User) (*msgraph.User, error) {
 
 func (d *dataUser) graphRead(id string) (*msgraph.User, error) {
 	req := d.graph.Users().ID(id).Request()
-	req.Select("id,userPrincipalName,mailNickname,displayName,companyName,surname,givenName,otherMails")
+	req.Select("id,userPrincipalName,mailNickname,displayName,companyName,surname,givenName,otherMails,accountEnabled")
 	return req.Get(d.ctx)
 }
 

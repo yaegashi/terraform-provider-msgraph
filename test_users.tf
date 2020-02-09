@@ -18,4 +18,5 @@ resource "msgraph_user" "demousers" {
   surname             = "Demo"
   mail_nickname       = "demouser${count.index}"
   other_mails         = ["demouser${count.index}@example.com"]
+  account_enabled     = true
 }

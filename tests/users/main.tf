@@ -1,3 +1,4 @@
+
 provider "msgraph" {
   tenant_id        = "common"
   client_id        = "82492584-8587-4e7d-ad48-19546ce8238f"

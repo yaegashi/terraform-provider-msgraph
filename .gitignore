@@ -3,4 +3,4 @@
 token_cache.json
 *.tfstate*
 *.log
-/terraform-provider-*
+terraform-provider-msgraph

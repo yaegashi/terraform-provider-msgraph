@@ -1,4 +1,4 @@
-package main
+package msgraph
 
 import (
 	"context"
@@ -16,47 +16,48 @@ const (
 	defaultTokenCachePath = "token_cache.json"
 )
 
-func provider() *schema.Provider {
+// Provider returns msgraph provider
+func Provider() *schema.Provider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{
 			"tenant_id": {
 				Type:        schema.TypeString,
 				Description: "Tenant ID",
 				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("MSGRAPH_TENANT_ID", defaultTenantID),
+				DefaultFunc: schema.EnvDefaultFunc("ARM_TENANT_ID", defaultTenantID),
 			},
 			"client_id": {
 				Type:        schema.TypeString,
 				Description: "Client ID",
 				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("MSGRAPH_CLIENT_ID", defaultClientID),
+				DefaultFunc: schema.EnvDefaultFunc("ARM_CLIENT_ID", defaultClientID),
 			},
 			"client_secret": {
 				Type:        schema.TypeString,
 				Description: "Client Secret",
 				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("MSGRAPH_CLIENT_SECRET", ""),
+				DefaultFunc: schema.EnvDefaultFunc("ARM_CLIENT_SECRET", ""),
 			},
 			"token_cache_path": {
 				Type:        schema.TypeString,
 				Description: "Token Cache Path",
 				Required:    true,
-				DefaultFunc: schema.EnvDefaultFunc("MSGRAPH_TOKEN_CACHE_PATH", defaultTokenCachePath),
+				DefaultFunc: schema.EnvDefaultFunc("ARM_TOKEN_CACHE_PATH", defaultTokenCachePath),
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"msgraph_user":  dataUserResource(),
-			"msgraph_group": dataGroupResource(),
+			"msgraph_user":  resourceUserResource(),
+			"msgraph_group": resourceGroupResource(),
 		},
 		ConfigureFunc: configureFunc,
 	}
 }
 
-func configureFunc(data *schema.ResourceData) (interface{}, error) {
-	tenantID := data.Get("tenant_id").(string)
-	clientID := data.Get("client_id").(string)
-	clientSecret := data.Get("client_secret").(string)
-	tokenCachePath := data.Get("token_cache_path").(string)
+func configureFunc(r *schema.ResourceData) (interface{}, error) {
+	tenantID := r.Get("tenant_id").(string)
+	clientID := r.Get("client_id").(string)
+	clientSecret := r.Get("client_secret").(string)
+	tokenCachePath := r.Get("token_cache_path").(string)
 	ctx := context.Background()
 	m := msauth.NewManager()
 	var ts oauth2.TokenSource

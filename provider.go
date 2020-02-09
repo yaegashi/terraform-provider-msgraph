@@ -45,7 +45,8 @@ func provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"msgraph_user": dataUserResource(),
+			"msgraph_user":  dataUserResource(),
+			"msgraph_group": dataGroupResource(),
 		},
 		ConfigureFunc: configureFunc,
 	}

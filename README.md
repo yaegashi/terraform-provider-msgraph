@@ -6,17 +6,17 @@ The POC implementation of [Terraform](https://terraform.io) Provider for [Micros
 
 ## How to test
 
-You need Terraform v0.12 and Go v1.13.
+You need Terraform v0.12 and Go v1.13, and an Azure AD tenant with the admin privilege.
 
-Clone the repository and build `terraform-provider-msgraph` executable:
+Clone the repository, then move to one of [the test directories](tests) and build `terraform-provider-msgraph` executable there:
 
 ```console
 $ git clone https://github.com/yaegashi/terraform-provider-msgraph
-$ cd terraform-provider-msgraph
-$ go build .
+$ cd terraform-provider-msgraph/tests/users
+$ go build ../..
 ```
 
-Edit [test_users.tf](test_users.tf) before running terraform:
+Configure the provider and variable by editing `main.tf`:
 
 ```hcl
 provider "msgraph" {
@@ -32,21 +32,27 @@ variable "tenant_domain" {
 }
 ```
 
-Run terraform with an environment variable `TF_LOG=DEBUG` to see the debug log output:
+Run terraform with an environment variable `TF_LOG=DEBUG` to enable debug log output:
 
 ```console
-$ TF_LOG=DEBUG terraform init
+$ terraform init
 $ TF_LOG=DEBUG terraform plan
 $ TF_LOG=DEBUG terraform apply
 ```
 
-On the first `terraform plan` invocation, you'll see a device code authorization message like the following.  Open https://microsoft.com/devicelogin with your web browser and enter the code to authenticate.
+## Authorization
+
+When the provider configuration `client_secret` is empty,
+it requests you for [the device code authorization](https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-device-code)
+in debug log output as follows on the first invocation of `terraform plan`:
 
 ```
 2020-02-09T03:55:33.204+0900 [DEBUG] plugin.terraform-provider-msgraph: 2020/02/09 03:55:33 To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code GEXSRT5LT to authenticate.
 ```
 
-Authentication tokens are save in token_cache.json in the current directory.  With this file you can bypass authentication  in subsequent terraform invocations.
+Open https://microsoft.com/devicelogin with your web browser and enter the code to proceed the authorization steps.
+After completing authorization it stores auth tokens in a file specified by `token_cache_path`.
+On subsequent terraform invocations it can skip the authorization steps above with this file.
 
 ## Todo
 
@@ -57,8 +63,9 @@ Authentication tokens are save in token_cache.json in the current directory.  Wi
   - [ ] Licenses
   - [ ] [Team](https://docs.microsoft.com/en-us/graph/api/resources/teams-api-overview)
   - [ ] ~~[Site](https://docs.microsoft.com/en-us/graph/api/resources/sharepoint)~~ (no ability to create new sites)
-- [ ] Auto-generate code based on the API metadata
+- [ ] Support importing
+- [ ] Code auto-generation based on the API metadata
 - [ ] Persist OAuth2 tokens in backend storage?
-- [ ] Better device auth grant experience
+- [ ] Better device auth grant experience (no `TF_LOG=DEBUG`)
 - [ ] Unit testing
 - [ ] CI

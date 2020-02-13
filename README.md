@@ -56,13 +56,12 @@ On subsequent terraform invocations it can skip the authorization steps above wi
 
 ## Todo
 
-- [ ] Support various graph resources
+- [ ] Support various graph resources (`resource`/`data`)
   - [ ] [User](https://docs.microsoft.com/en-us/graph/api/resources/user)
   - [ ] [Group](https://docs.microsoft.com/en-us/graph/api/resources/group)
-  - [ ] [Calendar](https://docs.microsoft.com/en-us/graph/api/resources/calendar)
-  - [ ] Licenses
+  - [ ] [Application](https://docs.microsoft.com/en-us/graph/api/resources/application)
   - [ ] [Team](https://docs.microsoft.com/en-us/graph/api/resources/teams-api-overview)
-  - [ ] ~~[Site](https://docs.microsoft.com/en-us/graph/api/resources/sharepoint)~~ (no ability to create new sites)
+  - [ ] [Site](https://docs.microsoft.com/en-us/graph/api/resources/sharepoint) (no ability to create new sites)
 - [ ] Support importing
 - [ ] Code auto-generation based on the API metadata
 - [ ] Persist OAuth2 tokens in backend storage?

@@ -12,14 +12,14 @@ variable "tenant_domain" {
 }
 
 resource "msgraph_user" "demousers" {
-  count               = 5
-  user_principal_name = "demouser${count.index}@${var.tenant_domain}"
-  display_name        = "Demo User ${count.index}"
-  given_name          = "User ${count.index}"
-  surname             = "Demo"
-  mail_nickname       = "demouser${count.index}"
-  other_mails         = ["demouser${count.index}@example.com"]
-  account_enabled     = true
+  count                              = 5
+  user_principal_name                = "demouser${count.index}@${var.tenant_domain}"
+  display_name                       = "Demo User ${count.index}"
+  given_name                         = "User ${count.index}"
+  surname                            = "Demo"
+  mail_nickname                      = "demouser${count.index}"
+  other_mails                        = ["demouser${count.index}@example.com"]
+  account_enabled                    = true
 }
 
 data "msgraph_user" "demouser0" {

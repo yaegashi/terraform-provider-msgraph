@@ -16,14 +16,16 @@ func resourceUserResource() *schema.Resource {
 		Update: resourceUserUpdate,
 		Delete: resourceUserDelete,
 		Schema: map[string]*schema.Schema{
-			"user_principal_name": &schema.Schema{Type: schema.TypeString, Required: true},
-			"display_name":        &schema.Schema{Type: schema.TypeString, Required: true},
-			"given_name":          &schema.Schema{Type: schema.TypeString, Optional: true},
-			"surname":             &schema.Schema{Type: schema.TypeString, Optional: true},
-			"mail_nickname":       &schema.Schema{Type: schema.TypeString, Required: true},
-			"mail":                &schema.Schema{Type: schema.TypeString, Computed: true},
-			"other_mails":         &schema.Schema{Type: schema.TypeList, Optional: true, Elem: &schema.Schema{Type: schema.TypeString}},
-			"account_enabled":     &schema.Schema{Type: schema.TypeBool, Required: true},
+			"user_principal_name":                &schema.Schema{Type: schema.TypeString, Required: true},
+			"display_name":                       &schema.Schema{Type: schema.TypeString, Required: true},
+			"given_name":                         &schema.Schema{Type: schema.TypeString, Optional: true},
+			"surname":                            &schema.Schema{Type: schema.TypeString, Optional: true},
+			"mail_nickname":                      &schema.Schema{Type: schema.TypeString, Required: true},
+			"mail":                               &schema.Schema{Type: schema.TypeString, Computed: true},
+			"other_mails":                        &schema.Schema{Type: schema.TypeList, Optional: true, Elem: &schema.Schema{Type: schema.TypeString}},
+			"account_enabled":                    &schema.Schema{Type: schema.TypeBool, Required: true},
+			"password":                           &schema.Schema{Type: schema.TypeString, Computed: true, Optional: true, Sensitive: true},
+			"force_change_password_next_sign_in": &schema.Schema{Type: schema.TypeBool, Computed: true, Optional: true},
 		},
 	}
 }
@@ -65,6 +67,9 @@ func (r *resourceUser) graphSet(user *msgraph.User) {
 	r.resource.Set("mail", user.Mail)
 	r.resource.Set("other_mails", user.OtherMails)
 	r.resource.Set("account_enabled", user.AccountEnabled)
+	if user.PasswordProfile != nil {
+		r.resource.Set("password", user.PasswordProfile.Password)
+	}
 }
 
 func (r *resourceUser) graphGet() *msgraph.User {
@@ -90,19 +95,27 @@ func (r *resourceUser) graphGet() *msgraph.User {
 	if val, ok := r.resource.GetOkExists("account_enabled"); ok {
 		user.AccountEnabled = P.CastBool(val)
 	}
+	if r.resource.IsNewResource() || r.resource.HasChange("password") {
+		user.PasswordProfile = &msgraph.PasswordProfile{}
+		if val, ok := r.resource.GetOkExists("password"); ok {
+			user.PasswordProfile.Password = P.CastString(val)
+		} else {
+			user.PasswordProfile.Password = P.String(uuid.New().String())
+		}
+		if val, ok := r.resource.GetOkExists("force_change_password_next_sign_in"); ok {
+			user.PasswordProfile.ForceChangePasswordNextSignIn = P.CastBool(val)
+		}
+	}
 	return user
 }
 
 func (r *resourceUser) create() error {
 	newUser := r.graphGet()
-	newUser.PasswordProfile = &msgraph.PasswordProfile{
-		ForceChangePasswordNextSignIn: P.Bool(false),
-		Password:                      P.String(uuid.New().String()), // XXX: random password
-	}
 	user, err := r.graph.userCreate(newUser)
 	if err != nil {
 		return err
 	}
+	user.PasswordProfile = newUser.PasswordProfile
 	r.resource.SetId(*user.ID)
 	r.graphSet(user)
 	return nil
@@ -129,6 +142,7 @@ func (r *resourceUser) update() error {
 	if err != nil {
 		return err
 	}
+	user.PasswordProfile = newUser.PasswordProfile
 	r.graphSet(user)
 	return nil
 }

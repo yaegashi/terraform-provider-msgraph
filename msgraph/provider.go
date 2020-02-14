@@ -45,6 +45,9 @@ func Provider() *schema.Provider {
 				DefaultFunc: schema.EnvDefaultFunc("ARM_TOKEN_CACHE_PATH", defaultTokenCachePath),
 			},
 		},
+		DataSourcesMap: map[string]*schema.Resource{
+			"msgraph_user": dataUserResource(),
+		},
 		ResourcesMap: map[string]*schema.Resource{
 			"msgraph_user":                 resourceUserResource(),
 			"msgraph_group":                resourceGroupResource(),

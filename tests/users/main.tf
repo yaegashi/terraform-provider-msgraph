@@ -21,3 +21,15 @@ resource "msgraph_user" "demousers" {
   other_mails         = ["demouser${count.index}@example.com"]
   account_enabled     = true
 }
+
+data "msgraph_user" "demouser0" {
+  user_principal_name = msgraph_user.demousers[0].id
+}
+
+data "msgraph_user" "demouser1" {
+  user_principal_name = msgraph_user.demousers[1].user_principal_name
+}
+
+data "msgraph_user" "demouser2" {
+  mail_nickname = msgraph_user.demousers[2].mail_nickname
+}

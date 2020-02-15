@@ -14,6 +14,9 @@ func resourceGroupResource() *schema.Resource {
 		Read:   resourceGroupRead,
 		Update: resourceGroupUpdate,
 		Delete: resourceGroupDelete,
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: map[string]*schema.Schema{
 			"display_name":     &schema.Schema{Type: schema.TypeString, Required: true},
 			"mail_nickname":    &schema.Schema{Type: schema.TypeString, Required: true},

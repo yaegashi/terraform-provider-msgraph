@@ -14,6 +14,9 @@ func resourceApplicationResource() *schema.Resource {
 		Read:   resourceApplicationRead,
 		Update: resourceApplicationUpdate,
 		Delete: resourceApplicationDelete,
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: map[string]*schema.Schema{
 			"app_id":                       &schema.Schema{Type: schema.TypeString, Computed: true},
 			"display_name":                 &schema.Schema{Type: schema.TypeString, Required: true},

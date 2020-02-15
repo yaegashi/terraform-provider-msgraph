@@ -15,6 +15,9 @@ func resourceUserResource() *schema.Resource {
 		Read:   resourceUserRead,
 		Update: resourceUserUpdate,
 		Delete: resourceUserDelete,
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: map[string]*schema.Schema{
 			"user_principal_name":                &schema.Schema{Type: schema.TypeString, Required: true},
 			"display_name":                       &schema.Schema{Type: schema.TypeString, Required: true},

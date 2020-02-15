@@ -21,3 +21,11 @@ resource "msgraph_group" "demo_office365_group" {
   group_types   = ["Unified"]
   visibility    = "Private"
 }
+
+data "msgraph_group" "demo_security_group" {
+  id = msgraph_group.demo_security_group.id
+}
+
+data "msgraph_group" "demo_office365_group" {
+  mail_nickname = msgraph_group.demo_office365_group.mail_nickname
+}

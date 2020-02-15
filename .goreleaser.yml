@@ -1,0 +1,18 @@
+before:
+  hooks:
+    - go mod tidy
+    - go test -v ./...
+builds:
+  - goos: [linux, darwin, windows]
+    goarch: [amd64]
+    binary: 'terraform-provider-msgraph{{if eq (printf "%.8s" .Version) "snapshot"}}_v{{.Version}}{{end}}'
+archives:
+  - name_template: '{{.ProjectName}}_{{if ne (printf "%.8s" .Version) "snapshot"}}v{{end}}{{.Version}}_{{ .Os }}_{{ .Arch }}'
+    format_overrides:
+      - goos: windows
+        format: zip
+checksum:
+  name_template: 'checksums.txt'
+snapshot:
+  name_template: "snapshot-{{.ShortCommit}}"
+changelog:

@@ -23,7 +23,7 @@ resource "msgraph_user" "demousers" {
 }
 
 data "msgraph_user" "demouser0" {
-  user_principal_name = msgraph_user.demousers[0].id
+  id = msgraph_user.demousers[0].id
 }
 
 data "msgraph_user" "demouser1" {

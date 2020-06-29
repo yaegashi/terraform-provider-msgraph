@@ -1,4 +1,4 @@
-# WIP: Terraform Provider for Microsoft Graph
+# Terraform Provider for Microsoft Graph
 
 ![Test](https://github.com/yaegashi/terraform-provider-msgraph/workflows/Test/badge.svg)
 ![Release](https://github.com/yaegashi/terraform-provider-msgraph/workflows/Release/badge.svg)
@@ -55,6 +55,10 @@ Open https://microsoft.com/devicelogin with your web browser and enter the code 
 After completing authorization it stores auth tokens in a file specified by `token_cache_path`.
 On subsequent terraform invocations it can skip the authorization steps above with this file.
 
+You can also specify an Azure Blob URL with SAS for `token_cache_path`.
+It's recommended to pass it via `ARM_TOKEN_CACHE_PATH` envvar
+since the SAS is considered sensitive information that should be hidden.
+
 ## How to test
 
 Terraform v0.12 and Go v1.13 are required.
@@ -103,7 +107,7 @@ $ TF_LOG=DEBUG terraform apply
   - [ ] [Site](https://docs.microsoft.com/en-us/graph/api/resources/sharepoint) (no ability to create new sites)
 - [ ] Support importing
 - [ ] Code auto-generation based on the API metadata
-- [ ] Persist OAuth2 tokens in backend storage?
+- [x] Persist OAuth2 tokens in backend storage (Azure Blob Storage)
 - [ ] Better device auth grant experience (no `TF_LOG=DEBUG`)
 - [ ] Unit testing
 - [ ] CI/CD

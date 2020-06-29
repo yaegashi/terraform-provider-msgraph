@@ -13,15 +13,15 @@ func dataUserResource() *schema.Resource {
 	return &schema.Resource{
 		Read: dataUserRead,
 		Schema: map[string]*schema.Schema{
-			"id":                  &schema.Schema{Type: schema.TypeString, ValidateFunc: validation.IsUUID, Computed: true, Optional: true, ConflictsWith: []string{"user_principal_name", "mail_nickname"}},
-			"user_principal_name": &schema.Schema{Type: schema.TypeString, Computed: true, Optional: true, ConflictsWith: []string{"id", "mail_nickname"}},
-			"display_name":        &schema.Schema{Type: schema.TypeString, Computed: true},
-			"given_name":          &schema.Schema{Type: schema.TypeString, Computed: true},
-			"surname":             &schema.Schema{Type: schema.TypeString, Computed: true},
-			"mail_nickname":       &schema.Schema{Type: schema.TypeString, Computed: true, Optional: true, ConflictsWith: []string{"id", "user_principal_name"}},
-			"mail":                &schema.Schema{Type: schema.TypeString, Computed: true},
-			"other_mails":         &schema.Schema{Type: schema.TypeList, Computed: true, Elem: &schema.Schema{Type: schema.TypeString}},
-			"account_enabled":     &schema.Schema{Type: schema.TypeBool, Computed: true},
+			"id":                  {Type: schema.TypeString, ValidateFunc: validation.IsUUID, Computed: true, Optional: true, ConflictsWith: []string{"user_principal_name", "mail_nickname"}},
+			"user_principal_name": {Type: schema.TypeString, Computed: true, Optional: true, ConflictsWith: []string{"id", "mail_nickname"}},
+			"display_name":        {Type: schema.TypeString, Computed: true},
+			"given_name":          {Type: schema.TypeString, Computed: true},
+			"surname":             {Type: schema.TypeString, Computed: true},
+			"mail_nickname":       {Type: schema.TypeString, Computed: true, Optional: true, ConflictsWith: []string{"id", "user_principal_name"}},
+			"mail":                {Type: schema.TypeString, Computed: true},
+			"other_mails":         {Type: schema.TypeList, Computed: true, Elem: &schema.Schema{Type: schema.TypeString}},
+			"account_enabled":     {Type: schema.TypeBool, Computed: true},
 		},
 	}
 }

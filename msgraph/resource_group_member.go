@@ -18,8 +18,8 @@ func resourceGroupMemberResource() *schema.Resource {
 			State: schema.ImportStatePassthrough,
 		},
 		Schema: map[string]*schema.Schema{
-			"group_id":  &schema.Schema{Type: schema.TypeString, Required: true, ForceNew: true},
-			"member_id": &schema.Schema{Type: schema.TypeString, Required: true, ForceNew: true},
+			"group_id":  {Type: schema.TypeString, Required: true, ForceNew: true},
+			"member_id": {Type: schema.TypeString, Required: true, ForceNew: true},
 		},
 	}
 }

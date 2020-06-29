@@ -13,14 +13,14 @@ func dataGroupResource() *schema.Resource {
 	return &schema.Resource{
 		Read: dataGroupRead,
 		Schema: map[string]*schema.Schema{
-			"id":               &schema.Schema{Type: schema.TypeString, ValidateFunc: validation.IsUUID, Computed: true, Optional: true},
-			"display_name":     &schema.Schema{Type: schema.TypeString, Computed: true},
-			"mail_nickname":    &schema.Schema{Type: schema.TypeString, Computed: true, Optional: true},
-			"mail_enabled":     &schema.Schema{Type: schema.TypeBool, Computed: true},
-			"security_enabled": &schema.Schema{Type: schema.TypeBool, Computed: true},
-			"mail":             &schema.Schema{Type: schema.TypeString, Computed: true},
-			"group_types":      &schema.Schema{Type: schema.TypeList, Computed: true, Elem: &schema.Schema{Type: schema.TypeString}},
-			"visibility":       &schema.Schema{Type: schema.TypeString, Computed: true},
+			"id":               {Type: schema.TypeString, ValidateFunc: validation.IsUUID, Computed: true, Optional: true},
+			"display_name":     {Type: schema.TypeString, Computed: true},
+			"mail_nickname":    {Type: schema.TypeString, Computed: true, Optional: true},
+			"mail_enabled":     {Type: schema.TypeBool, Computed: true},
+			"security_enabled": {Type: schema.TypeBool, Computed: true},
+			"mail":             {Type: schema.TypeString, Computed: true},
+			"group_types":      {Type: schema.TypeList, Computed: true, Elem: &schema.Schema{Type: schema.TypeString}},
+			"visibility":       {Type: schema.TypeString, Computed: true},
 		},
 	}
 }

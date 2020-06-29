@@ -18,13 +18,13 @@ func resourceGroupResource() *schema.Resource {
 			State: schema.ImportStatePassthrough,
 		},
 		Schema: map[string]*schema.Schema{
-			"display_name":     &schema.Schema{Type: schema.TypeString, Required: true},
-			"mail_nickname":    &schema.Schema{Type: schema.TypeString, Required: true},
-			"mail_enabled":     &schema.Schema{Type: schema.TypeBool, Computed: true},
-			"security_enabled": &schema.Schema{Type: schema.TypeBool, Computed: true},
-			"mail":             &schema.Schema{Type: schema.TypeString, Computed: true},
-			"group_types":      &schema.Schema{Type: schema.TypeList, Optional: true, Elem: &schema.Schema{Type: schema.TypeString}},
-			"visibility":       &schema.Schema{Type: schema.TypeString, Optional: true},
+			"display_name":     {Type: schema.TypeString, Required: true},
+			"mail_nickname":    {Type: schema.TypeString, Required: true},
+			"mail_enabled":     {Type: schema.TypeBool, Computed: true},
+			"security_enabled": {Type: schema.TypeBool, Computed: true},
+			"mail":             {Type: schema.TypeString, Computed: true},
+			"group_types":      {Type: schema.TypeList, Optional: true, Elem: &schema.Schema{Type: schema.TypeString}},
+			"visibility":       {Type: schema.TypeString, Optional: true},
 		},
 	}
 }

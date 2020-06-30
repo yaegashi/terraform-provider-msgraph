@@ -15,11 +15,11 @@ func resourceApplicationPasswordResource() *schema.Resource {
 		Read:   resourceApplicationPasswordRead,
 		Delete: resourceApplicationPasswordDelete,
 		Schema: map[string]*schema.Schema{
-			"application_id":  &schema.Schema{Type: schema.TypeString, Required: true, ForceNew: true},
-			"display_name":    &schema.Schema{Type: schema.TypeString, Required: true, ForceNew: true},
-			"start_date_time": &schema.Schema{Type: schema.TypeString, ValidateFunc: validation.ValidateRFC3339TimeString, Optional: true, Computed: true, ForceNew: true},
-			"end_date_time":   &schema.Schema{Type: schema.TypeString, ValidateFunc: validation.ValidateRFC3339TimeString, Optional: true, Computed: true, ForceNew: true},
-			"secret_text":     &schema.Schema{Type: schema.TypeString, Computed: true, Sensitive: true},
+			"application_id":  {Type: schema.TypeString, Required: true, ForceNew: true},
+			"display_name":    {Type: schema.TypeString, Required: true, ForceNew: true},
+			"start_date_time": {Type: schema.TypeString, ValidateFunc: validation.ValidateRFC3339TimeString, Optional: true, Computed: true, ForceNew: true},
+			"end_date_time":   {Type: schema.TypeString, ValidateFunc: validation.ValidateRFC3339TimeString, Optional: true, Computed: true, ForceNew: true},
+			"secret_text":     {Type: schema.TypeString, Computed: true, Sensitive: true},
 		},
 	}
 }

@@ -2,6 +2,7 @@ package msgraph
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -44,6 +45,12 @@ func Provider() *schema.Provider {
 				Required:    true,
 				DefaultFunc: schema.EnvDefaultFunc("ARM_TOKEN_CACHE_PATH", defaultTokenCachePath),
 			},
+			"console_device_path": {
+				Type:        schema.TypeString,
+				Description: "Console Device Path",
+				Required:    true,
+				DefaultFunc: schema.EnvDefaultFunc("ARM_CONSOLE_DEVICE_PATH", ""),
+			},
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"msgraph_user":  dataUserResource(),
@@ -76,7 +83,18 @@ func configureFunc(r *schema.ResourceData) (interface{}, error) {
 		}
 	} else {
 		m.LoadFile(tokenCachePath)
-		ts, err = m.DeviceAuthorizationGrant(ctx, tenantID, clientID, []string{"offline_access", msauth.DefaultMSGraphScope}, func(dc *msauth.DeviceCode) error { log.Println(dc.Message); return nil })
+		ts, err = m.DeviceAuthorizationGrant(ctx, tenantID, clientID, []string{"offline_access", msauth.DefaultMSGraphScope},
+			func(dc *msauth.DeviceCode) error {
+				log.Println(dc.Message)
+				con, err := openConsole(r.Get("console_device_path").(string))
+				if err == nil {
+					fmt.Fprintln(con, dc.Message)
+					con.Close()
+				} else {
+					log.Printf("Failed to open console: %s", err)
+				}
+				return nil
+			})
 		if err != nil {
 			return nil, err
 		}

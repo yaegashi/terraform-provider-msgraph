@@ -38,27 +38,27 @@ type resourceUser struct {
 	resource *schema.ResourceData
 }
 
-func newResourceUser(r *schema.ResourceData, m interface{}) *resourceUser {
+func newResourceUser(d *schema.ResourceData, meta interface{}) *resourceUser {
 	return &resourceUser{
-		graph:    newGraph(m),
-		resource: r,
+		graph:    newGraph(meta),
+		resource: d,
 	}
 }
 
-func resourceUserCreate(r *schema.ResourceData, m interface{}) error {
-	return newResourceUser(r, m).create()
+func resourceUserCreate(d *schema.ResourceData, meta interface{}) error {
+	return newResourceUser(d, meta).create()
 }
 
-func resourceUserRead(r *schema.ResourceData, m interface{}) error {
-	return newResourceUser(r, m).read()
+func resourceUserRead(d *schema.ResourceData, meta interface{}) error {
+	return newResourceUser(d, meta).read()
 }
 
-func resourceUserUpdate(r *schema.ResourceData, m interface{}) error {
-	return newResourceUser(r, m).update()
+func resourceUserUpdate(d *schema.ResourceData, meta interface{}) error {
+	return newResourceUser(d, meta).update()
 }
 
-func resourceUserDelete(r *schema.ResourceData, m interface{}) error {
-	return newResourceUser(r, m).delete()
+func resourceUserDelete(d *schema.ResourceData, meta interface{}) error {
+	return newResourceUser(d, meta).delete()
 }
 
 func (r *resourceUser) graphSet(user *msgraph.User) {

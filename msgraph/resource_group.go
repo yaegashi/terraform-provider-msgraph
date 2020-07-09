@@ -34,27 +34,27 @@ type resourceGroup struct {
 	resource *schema.ResourceData
 }
 
-func newResourceGroup(r *schema.ResourceData, m interface{}) *resourceGroup {
+func newResourceGroup(d *schema.ResourceData, meta interface{}) *resourceGroup {
 	return &resourceGroup{
-		graph:    newGraph(m),
-		resource: r,
+		graph:    newGraph(meta),
+		resource: d,
 	}
 }
 
-func resourceGroupCreate(r *schema.ResourceData, m interface{}) error {
-	return newResourceGroup(r, m).create()
+func resourceGroupCreate(d *schema.ResourceData, meta interface{}) error {
+	return newResourceGroup(d, meta).create()
 }
 
-func resourceGroupRead(r *schema.ResourceData, m interface{}) error {
-	return newResourceGroup(r, m).read()
+func resourceGroupRead(d *schema.ResourceData, meta interface{}) error {
+	return newResourceGroup(d, meta).read()
 }
 
-func resourceGroupUpdate(r *schema.ResourceData, m interface{}) error {
-	return newResourceGroup(r, m).update()
+func resourceGroupUpdate(d *schema.ResourceData, meta interface{}) error {
+	return newResourceGroup(d, meta).update()
 }
 
-func resourceGroupDelete(r *schema.ResourceData, m interface{}) error {
-	return newResourceGroup(r, m).delete()
+func resourceGroupDelete(d *schema.ResourceData, meta interface{}) error {
+	return newResourceGroup(d, meta).delete()
 }
 
 func (r *resourceGroup) graphSet(group *msgraph.Group) {

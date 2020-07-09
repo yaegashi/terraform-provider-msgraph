@@ -30,7 +30,7 @@ func resourceApplicationResource() *schema.Resource {
 			"enable_id_token_issuance":     {Type: schema.TypeBool, Optional: true},
 			"enable_access_token_issuance": {Type: schema.TypeBool, Optional: true},
 			"api": {
-				Type:     schema.TypeSet,
+				Type:     schema.TypeList,
 				Optional: true,
 				MaxItems: 1,
 				Elem: &schema.Resource{
@@ -110,27 +110,27 @@ type resourceApplication struct {
 	resource *schema.ResourceData
 }
 
-func newResourceApplication(r *schema.ResourceData, m interface{}) *resourceApplication {
+func newResourceApplication(d *schema.ResourceData, meta interface{}) *resourceApplication {
 	return &resourceApplication{
-		graph:    newGraph(m),
-		resource: r,
+		graph:    newGraph(meta),
+		resource: d,
 	}
 }
 
-func resourceApplicationCreate(r *schema.ResourceData, m interface{}) error {
-	return newResourceApplication(r, m).create()
+func resourceApplicationCreate(d *schema.ResourceData, meta interface{}) error {
+	return newResourceApplication(d, meta).create()
 }
 
-func resourceApplicationRead(r *schema.ResourceData, m interface{}) error {
-	return newResourceApplication(r, m).read()
+func resourceApplicationRead(d *schema.ResourceData, meta interface{}) error {
+	return newResourceApplication(d, meta).read()
 }
 
-func resourceApplicationUpdate(r *schema.ResourceData, m interface{}) error {
-	return newResourceApplication(r, m).update()
+func resourceApplicationUpdate(d *schema.ResourceData, meta interface{}) error {
+	return newResourceApplication(d, meta).update()
 }
 
-func resourceApplicationDelete(r *schema.ResourceData, m interface{}) error {
-	return newResourceApplication(r, m).delete()
+func resourceApplicationDelete(d *schema.ResourceData, meta interface{}) error {
+	return newResourceApplication(d, meta).delete()
 }
 
 func (r *resourceApplication) graphSet(application *msgraph.Application) {

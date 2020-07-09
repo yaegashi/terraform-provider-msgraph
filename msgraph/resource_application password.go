@@ -17,8 +17,8 @@ func resourceApplicationPasswordResource() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			"application_id":  {Type: schema.TypeString, Required: true, ForceNew: true},
 			"display_name":    {Type: schema.TypeString, Required: true, ForceNew: true},
-			"start_date_time": {Type: schema.TypeString, ValidateFunc: validation.ValidateRFC3339TimeString, Optional: true, Computed: true, ForceNew: true},
-			"end_date_time":   {Type: schema.TypeString, ValidateFunc: validation.ValidateRFC3339TimeString, Optional: true, Computed: true, ForceNew: true},
+			"start_date_time": {Type: schema.TypeString, ValidateFunc: validation.IsRFC3339Time, Optional: true, Computed: true, ForceNew: true},
+			"end_date_time":   {Type: schema.TypeString, ValidateFunc: validation.IsRFC3339Time, Optional: true, Computed: true, ForceNew: true},
 			"secret_text":     {Type: schema.TypeString, Computed: true, Sensitive: true},
 		},
 	}
@@ -29,23 +29,23 @@ type resourceApplicationPassword struct {
 	resource *schema.ResourceData
 }
 
-func newResourceApplicationPassword(r *schema.ResourceData, m interface{}) *resourceApplicationPassword {
+func newResourceApplicationPassword(d *schema.ResourceData, meta interface{}) *resourceApplicationPassword {
 	return &resourceApplicationPassword{
-		graph:    newGraph(m),
-		resource: r,
+		graph:    newGraph(meta),
+		resource: d,
 	}
 }
 
-func resourceApplicationPasswordCreate(r *schema.ResourceData, m interface{}) error {
-	return newResourceApplicationPassword(r, m).create()
+func resourceApplicationPasswordCreate(d *schema.ResourceData, meta interface{}) error {
+	return newResourceApplicationPassword(d, meta).create()
 }
 
-func resourceApplicationPasswordRead(r *schema.ResourceData, m interface{}) error {
-	return newResourceApplicationPassword(r, m).read()
+func resourceApplicationPasswordRead(d *schema.ResourceData, meta interface{}) error {
+	return newResourceApplicationPassword(d, meta).read()
 }
 
-func resourceApplicationPasswordDelete(r *schema.ResourceData, m interface{}) error {
-	return newResourceApplicationPassword(r, m).delete()
+func resourceApplicationPasswordDelete(d *schema.ResourceData, meta interface{}) error {
+	return newResourceApplicationPassword(d, meta).delete()
 }
 
 func (r *resourceApplicationPassword) graphSet(pc *msgraph.PasswordCredential) {

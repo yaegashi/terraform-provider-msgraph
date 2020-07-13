@@ -35,6 +35,7 @@ provider "msgraph" {
   console_device_path = "/dev/tty"                             // env:ARM_CONSOLE_DEVICE_PATH
 }
 ```
+
 The default configuration above is to use the public client defined in l0w.dev tenant with the permission Directory.AccessAsUser.All. You can use it to make terraform to access your tenant's directory with the delegated privilege.
 
 When client_secret is empty, the provider attempts the device code authorization. You can see the following message on the first invocation of terraform plan:
@@ -48,11 +49,15 @@ persisted to local or remote state storage.
 To sign in, use a web browser to open the page https://microsoft.com/devicelogin and enter the code GNATKX4J8 to authenticate.
 ```
 
-Open https://microsoft.com/devicelogin with your web browser and enter the code to proceed the authorization steps. After completing authorization it stores auth tokens in a file specified by token_cache_path. On subsequent terraform invocations it can skip the authorization steps above with this file.
+Open <https://microsoft.com/devicelogin> with your web browser and enter the code to proceed the authorization steps. After completing authorization it stores auth tokens in a file specified by token_cache_path. On subsequent terraform invocations it can skip the authorization steps above with this file.
 
 You can also specify an Azure Blob URL with SAS for `token_cache_path`. It's recommended to pass it via `ARM_TOKEN_CACHE_PATH` envvar since the SAS is considered sensitive information that should be hidden.
 
 The provider opens `console_device_path` to prompt the instruction of the device code authorization. It might have no acccess to /dev/tty in the restricted environment like GitLab CI runner. You can workaround it by fd number device and redirection with the shell as follows:
+
+```console
+$ 99>&2 ARM_CONSOLE_DEVICE_PATH=/dev/fd/99 terraform plan
+```
 
 ## Supported resources
 

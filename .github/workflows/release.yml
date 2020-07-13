@@ -18,11 +18,7 @@ jobs:
       - name: Unshallow
         run: git fetch --prune --unshallow
       - name: lint
-        run: |
-          export PATH=$PATH:$(go env GOPATH)/bin
-          cd && go get github.com/bflad/tfproviderlint/cmd/tfproviderlint 
-          cd -
-          tfproviderlint ./...
+        run: go run github.com/bflad/tfproviderlint/cmd/tfproviderlint ./...
       - name: Import GPG key
         id: import_gpg
         uses: crazy-max/ghaction-import-gpg@v2

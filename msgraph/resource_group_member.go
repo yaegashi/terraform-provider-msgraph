@@ -29,23 +29,23 @@ type resourceGroupMember struct {
 	resource *schema.ResourceData
 }
 
-func newResourceGroupMember(r *schema.ResourceData, m interface{}) *resourceGroupMember {
+func newResourceGroupMember(d *schema.ResourceData, meta interface{}) *resourceGroupMember {
 	return &resourceGroupMember{
-		graph:    newGraph(m),
-		resource: r,
+		graph:    newGraph(meta),
+		resource: d,
 	}
 }
 
-func resourceGroupMemberCreate(r *schema.ResourceData, m interface{}) error {
-	return newResourceGroupMember(r, m).create()
+func resourceGroupMemberCreate(d *schema.ResourceData, meta interface{}) error {
+	return newResourceGroupMember(d, meta).create()
 }
 
-func resourceGroupMemberRead(r *schema.ResourceData, m interface{}) error {
-	return newResourceGroupMember(r, m).read()
+func resourceGroupMemberRead(d *schema.ResourceData, meta interface{}) error {
+	return newResourceGroupMember(d, meta).read()
 }
 
-func resourceGroupMemberDelete(r *schema.ResourceData, m interface{}) error {
-	return newResourceGroupMember(r, m).delete()
+func resourceGroupMemberDelete(d *schema.ResourceData, meta interface{}) error {
+	return newResourceGroupMember(d, meta).delete()
 }
 
 func (r *resourceGroupMember) create() error {

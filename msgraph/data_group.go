@@ -37,8 +37,8 @@ func newDataGroup(d *schema.ResourceData, m interface{}) *dataGroup {
 	}
 }
 
-func dataGroupRead(d *schema.ResourceData, m interface{}) error {
-	return newDataGroup(d, m).read()
+func dataGroupRead(d *schema.ResourceData, meta interface{}) error {
+	return newDataGroup(d, meta).read()
 }
 
 func (d *dataGroup) graphSet(group *msgraph.Group) {

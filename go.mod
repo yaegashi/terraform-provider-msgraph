@@ -7,6 +7,7 @@ require (
 	cloud.google.com/go/storage v1.10.0 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/aws/aws-sdk-go v1.32.11 // indirect
+	github.com/bflad/tfproviderlint v0.14.0
 	github.com/fatih/color v1.9.0 // indirect
 	github.com/google/uuid v1.1.1
 	github.com/hashicorp/go-getter v1.4.1 // indirect

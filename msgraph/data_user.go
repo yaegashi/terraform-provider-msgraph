@@ -31,15 +31,15 @@ type dataUser struct {
 	data  *schema.ResourceData
 }
 
-func newDataUser(d *schema.ResourceData, m interface{}) *dataUser {
+func newDataUser(d *schema.ResourceData, meta interface{}) *dataUser {
 	return &dataUser{
-		graph: newGraph(m),
+		graph: newGraph(meta),
 		data:  d,
 	}
 }
 
-func dataUserRead(d *schema.ResourceData, m interface{}) error {
-	return newDataUser(d, m).read()
+func dataUserRead(d *schema.ResourceData, meta interface{}) error {
+	return newDataUser(d, meta).read()
 }
 
 func (d *dataUser) graphSet(user *msgraph.User) {
